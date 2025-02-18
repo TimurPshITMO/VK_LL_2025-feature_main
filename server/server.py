@@ -32,6 +32,12 @@ async def lifespan(app: FastAPI):
     except Exception as e:
         logger.error(f"Failed to load the feature extractor: {e}", exc_info=True)
         app.state.feature_extractor = None
+    try:
+        app.state.scaler = joblib.load("resources/std_scaler.bin")
+        logger.info("Scaler added")
+    except Exception as e:
+        logger.error(f"Failed to load the scaler: {e}", exc_info=True)
+        app.state.scaler = None
     yield
     logger.info("Shutting down the server...")
 
@@ -45,13 +51,17 @@ async def predict(data: Request):
     if model is None:
         logger.error("Model is not loaded")
         raise HTTPException(status_code=500, detail="Model is not loaded")
-    
+    scaler = app.state.scaler
+    if scaler is None:
+        logger.error("Scaler is not loaded")
+        raise HTTPException(status_code=500, detail="Scaler is not loaded")
     try:
         logger.info(f"Received data: {data}")
 
         data_df = pd.DataFrame([data.model_dump()])
 
         features = app.state.feature_extractor.get_all_features(data_df)
+        fuatures_scaled = scaler.transform(features)
         prediction = model.predict(features)
         logger.info(f"Prediction: {prediction}")
 
