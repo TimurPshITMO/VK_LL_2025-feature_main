@@ -61,8 +61,8 @@ async def predict(data: Request):
         data_df = pd.DataFrame([data.model_dump()])
 
         features = app.state.feature_extractor.get_all_features(data_df)
-        fuatures_scaled = scaler.transform(features)
-        prediction = model.predict(features)
+        features_scaled = scaler.transform(features)
+        prediction = model.predict(features_scaled)
         logger.info(f"Prediction: {prediction}")
 
         response = Response(
