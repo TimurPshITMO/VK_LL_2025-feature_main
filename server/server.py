@@ -11,8 +11,8 @@ from features_extractor import FeatureExtractor
 
 # Настройка логирования
 logging.basicConfig(
-    filename="logs/logs",
-    level=logging.INFO,
+    filename="server.log",
+    level=logging.DEBUG,
     format="%(asctime)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
