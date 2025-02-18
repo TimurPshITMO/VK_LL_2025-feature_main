@@ -10,7 +10,7 @@ services:
     environment:
       - TZ=UTC
     volumes:
-      - ./server.log:/app/logs
+      - ./logs:/app/logs
     # Если нужно GPU
     # runtime: nvidia
     # deploy:

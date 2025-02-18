@@ -11,7 +11,7 @@ from features_extractor import FeatureExtractor
 
 # Настройка логирования
 logging.basicConfig(
-    filename="server.log",
+    filename="logs/logs",
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
 )
